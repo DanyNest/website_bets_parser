@@ -31,7 +31,6 @@ import reactor.util.retry.Retry;
 @Slf4j
 @RequiredArgsConstructor
 public class EventMarketsDataParser {
-  private final ExecutorService executorService = Executors.newFixedThreadPool(3);
 
   @Value("${leon.league.data.url.prefix}")
   private String URL_PREFIX;
@@ -53,6 +52,7 @@ public class EventMarketsDataParser {
   private String START_DATE_NODE_KEY;
   private final WebClient webClient;
   private final TopLeagueDataParser topLeagueDataReceiver;
+  private final ExecutorService executorService = Executors.newFixedThreadPool(3);
   private static final String LEAGUE_EXTRACTING_DATA_MESSAGE = "Error occurred during extracting data for league with ID: ";
 
   public void retrieveAndQueueEvents() {
@@ -72,7 +72,7 @@ public class EventMarketsDataParser {
                 .retryWhen(Retry.backoff(3, Duration.ofSeconds(2)))
                 .block();
             if (json != null && json.has(DATA_NODE_KEY)) {
-                for (JsonNode dataNode : json.get(DATA_NODE_KEY)) {
+              for (JsonNode dataNode : json.get(DATA_NODE_KEY)) {
                 if (counter.getAndIncrement() >= 2) {
                   break;
                 }

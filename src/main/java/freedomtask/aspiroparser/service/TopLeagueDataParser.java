@@ -20,7 +20,7 @@ import reactor.util.retry.Retry;
 @Service
 @RequiredArgsConstructor
 public class TopLeagueDataParser {
-  private final WebClient webClient;
+
   @Value("${name.node.key}")
   private String NAME_NODE_KEY;
   @Value("${regions.node.key}")
@@ -33,6 +33,7 @@ public class TopLeagueDataParser {
   private String ID_NODE_KEY;
   @Value("${leon.top.league.url}")
   private String LEON_TOP_LEAGUE_URL;
+  private final WebClient webClient;
 
   public Map<String, List<League>> receiveData() {
     Map<String, List<League>> topLeagues = new ConcurrentHashMap<>();
@@ -47,7 +48,8 @@ public class TopLeagueDataParser {
         for (JsonNode league : region.get(LEAGUES_NODE_KEY)) {
           if (league.has(TOP_NODE_KEY) && league.get(TOP_NODE_KEY).asBoolean()) {
             topLeagues.computeIfAbsent(sportName, k -> new ArrayList<>())
-                .add(new League(league.get(NAME_NODE_KEY).asText(), league.get(ID_NODE_KEY).asText()));
+                .add(new League(league.get(NAME_NODE_KEY).asText(),
+                    league.get(ID_NODE_KEY).asText()));
           }
         }
       }
