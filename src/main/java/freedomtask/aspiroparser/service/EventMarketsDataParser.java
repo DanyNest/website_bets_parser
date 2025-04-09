@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ import reactor.util.retry.Retry;
 @Slf4j
 @RequiredArgsConstructor
 public class EventMarketsDataParser {
+  private final ExecutorService executorService = Executors.newFixedThreadPool(3);
 
   @Value("${leon.league.data.url.prefix}")
   private String URL_PREFIX;
@@ -82,7 +85,7 @@ public class EventMarketsDataParser {
             log.error(LEAGUE_EXTRACTING_DATA_MESSAGE + league.getLeagueId());
           }
         }
-      });
+      }, executorService);
     }
   }
 
