@@ -1,4 +1,4 @@
-package freedomtask.aspiroparser;
+package freedomtask.aspiroparser.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,4 +18,5 @@ public class EventPollingScheduler {
   public void scheduledPolling() {
     receiver.retrieveAndQueueEvents();
   }
+
 }

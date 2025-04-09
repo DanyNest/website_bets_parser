@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ConsoleOutputService {
+
   private final ExecutorService executorService = Executors.newFixedThreadPool(3);
 
 
@@ -47,7 +48,6 @@ public class ConsoleOutputService {
         .append(event.getStartDate())
         .append(", ")
         .append(event.getEventId());
-
     event.getMarkets().forEach(market -> {
       builder.append("\n")
           .append("\t")
@@ -66,7 +66,9 @@ public class ConsoleOutputService {
             .append(runner.getId());
       });
     });
-    builder.append("\n").append("\n");
-    System.out.println(builder.toString());
+    builder
+        .append("\n")
+        .append("\n");
+    System.out.println(builder);
   }
 }
